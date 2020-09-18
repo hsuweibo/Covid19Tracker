@@ -1,0 +1,22 @@
+.formControl {
+  text-align: right;
+  margin-bottom: 2em;
+}
+
+.card {
+  margin: 2em;
+}
+
+.withDivider {
+  border-right: 1px solid rgba(0, 0, 0, 0.301);
+}
+
+.withDivider:last-child {
+  border-right: none;
+}
+
+.menuItem {
+  text-align: right;
+  margin-right: 1em;
+  display: block;
+}
