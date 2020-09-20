@@ -1,21 +1,21 @@
 import React, { Component } from "react";
-import {
-  Card,
-  CardContent,
-  Select,
-  MenuItem,
-  InputLabel,
-  FormControl,
-  Typography,
-  Grid,
-} from "@material-ui/core";
-import styles from "./OverviewContainer.module.css";
+import { Card, CardContent, Typography, Grid } from "@material-ui/core";
+
+import { withStyles } from "@material-ui/core/styles";
+
 import CountBox from "../CountBox/CountBox";
 import Spinner from "../UI/Spinner/Spinner";
+import DropdownSelect from "../UI/DropdownSelect/DropdownSelect";
+
+const styles = (theme) => ({
+  root: {
+    margin: "2em",
+  },
+});
 
 class OverviewContainer extends Component {
   state = {
-    selectedCountry: "Worldwide",
+    selectedCountry: null,
     data: null,
     loadComplete: false,
   };
@@ -34,8 +34,8 @@ class OverviewContainer extends Component {
             recovered: datum.recovered,
             newRecovered: datum.todayRecovered,
           };
-          this.setState({ data: newData });
         }
+        this.setState({ data: newData });
       })
       .then(() => {
         return fetch("https://disease.sh/v3/covid-19/all?yesterday=true")
@@ -60,6 +60,7 @@ class OverviewContainer extends Component {
             this.setState((prevState) => {
               const newState = {
                 ...prevState,
+                selectedCountry: "Worldwide",
                 data: { Worldwide: worldwideData, ...prevState.data },
                 loadComplete: true,
               };
@@ -74,69 +75,45 @@ class OverviewContainer extends Component {
   };
 
   render() {
+    const { classes } = this.props;
     let content;
     if (!this.state.loadComplete) {
       content = <Spinner></Spinner>;
     } else {
-      const countryOptions = Object.keys(this.state.data);
+      const countryNames = Object.keys(this.state.data);
+      const countryDropdownSelect = (
+        <DropdownSelect
+          label="Country"
+          defaultValue={this.state.selectedCountry}
+          onSelectChange={this.countrySelectHandler}
+          options={countryNames}
+        />
+      );
+
       const selectedCountryData = this.state.data[this.state.selectedCountry];
       console.log(selectedCountryData);
       content = (
         <React.Fragment>
-          <div style={{ textAlign: "right" }}>
-            <FormControl className={styles.formControl}>
-              <InputLabel id="country-selector-label">Country</InputLabel>
-              <Select
-                className="TEST"
-                labelId="country-selector-label"
-                value={this.state.selectedCountry}
-                onChange={this.countrySelectHandler}
-                label="Country"
-                MenuProps={{
-                  anchorOrigin: {
-                    vertical: "bottom",
-                    horizontal: "right",
-                  },
-                  transformOrigin: {
-                    horizontal: "right",
-                  },
-                  getContentAnchorEl: null,
-                  style: { height: "300px" },
-                }}
-              >
-                {countryOptions.map((country) => {
-                  return (
-                    <MenuItem
-                      key={country}
-                      value={country}
-                      className={styles.menuItem}
-                    >
-                      {country}
-                    </MenuItem>
-                  );
-                })}
-              </Select>
-            </FormControl>
-          </div>
+          {countryDropdownSelect}
 
-          <Grid container>
-            <Grid item xs className={styles.withDivider}>
+          <Grid container className={classes.panel}>
+            <Grid item xs={12} sm={4}>
               <CountBox
-                countType="Cases"
+                countType="cases"
                 newCount={selectedCountryData.newCases}
                 totalCount={selectedCountryData.cases}
               ></CountBox>
             </Grid>
-            <Grid item xs className={styles.withDivider}>
+            <Grid item xs={12} sm={4}>
               <CountBox
-                countType="Deaths"
+                countType="deaths"
                 newCount={selectedCountryData.newDeaths}
                 totalCount={selectedCountryData.deaths}
               ></CountBox>
             </Grid>
-            <Grid item xs className={styles.withDivider}>
+            <Grid item xs={12} sm={4}>
               <CountBox
-                countType="Recovered"
+                countType="recovered"
                 newCount={selectedCountryData.newRecovered}
                 totalCount={selectedCountryData.recovered}
               ></CountBox>
@@ -146,7 +123,7 @@ class OverviewContainer extends Component {
       );
     }
     return (
-      <Card className={styles.card}>
+      <Card className={classes.root}>
         <CardContent>
           <Typography variant="h4" align="center">
             Cases Overview
@@ -158,4 +135,4 @@ class OverviewContainer extends Component {
   }
 }
 
-export default OverviewContainer;
+export default withStyles(styles)(OverviewContainer);

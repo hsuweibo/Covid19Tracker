@@ -2,6 +2,7 @@ import React from "react";
 import { Typography, Grid } from "@material-ui/core";
 import OverviewContainer from "./components/OverviewContainer/OverviewContainer";
 import { StylesProvider } from "@material-ui/core/styles";
+import ChartContainer from "./components/ChartContainer/ChartContainer";
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
       <Grid container>
         <Grid item xs={12} md={9}>
           <OverviewContainer />
+          <ChartContainer />
         </Grid>
         <Grid item xs={12} md={3}>
           Right
