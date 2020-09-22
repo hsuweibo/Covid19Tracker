@@ -1,14 +1,26 @@
+import { blue, red, green } from "@material-ui/core/colors";
 import Chart from "chart.js";
 import React, { Component } from "react";
+
+const settings = {
+  cases: {
+    borderColor: blue["A100"],
+    backgroundColor: blue[200],
+  },
+  deaths: {
+    borderColor: red["A100"],
+    backgroundColor: red[200],
+  },
+  recovered: {
+    borderColor: green["A100"],
+    backgroundColor: green[200],
+  },
+};
 
 class HistoryChart extends Component {
   canvasRef = React.createRef();
 
   componentDidMount() {
-    const myFunc = function (dataLabel, index) {
-      // Hide the label of every 2nd dataset. return null to hide the grid line too
-      return index % 30 === 0 ? dataLabel : "";
-    };
     this.myChart = new Chart(this.canvasRef.current.getContext("2d"), {
       type: "line",
       data: {
@@ -16,8 +28,8 @@ class HistoryChart extends Component {
         datasets: [
           {
             label: "My First dataset",
-            backgroundColor: "rgb(255, 99, 132)",
-            borderColor: "rgb(255, 99, 132)",
+            backgroundColor: settings[this.props.dataType].backgroundColor,
+            borderColor: settings[this.props.dataType].borderColor,
             data: this.props.data,
           },
         ],
@@ -37,17 +49,19 @@ class HistoryChart extends Component {
           xAxes: [
             {
               display: true,
-              beforeUpdate: function (dataLabel, index) {
-                console.log("hello");
-                // Hide the label of every 2nd dataset. return null to hide the grid line too
-                return index % 2 === 0 ? dataLabel : "";
-              },
               ticks: {
                 callback: function (dataLabel, index) {
-                  console.log("hello");
                   // Hide the label of every 2nd dataset. return null to hide the grid line too
-                  return index % 2 === 0 ? dataLabel : "";
+                  return index % 5 === 0 ? dataLabel : "";
                 },
+              },
+            },
+          ],
+          yAxes: [
+            {
+              ticks: {
+                // min: 0,
+                precision: 0,
               },
             },
           ],
@@ -56,8 +70,22 @@ class HistoryChart extends Component {
     });
   }
 
+  componentDidUpdate() {
+    this.myChart.data.datasets[0].data = this.props.data;
+    this.myChart.data.labels = this.props.labels;
+    this.myChart.data.datasets[0].backgroundColor =
+      settings[this.props.dataType].backgroundColor;
+    this.myChart.data.datasets[0].borderColor =
+      settings[this.props.dataType].borderColor;
+    this.myChart.update();
+  }
+
   render() {
-    return <canvas ref={this.canvasRef}></canvas>;
+    return (
+      <div style={{ position: "relative" }}>
+        <canvas ref={this.canvasRef}></canvas>
+      </div>
+    );
   }
 }
 

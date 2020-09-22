@@ -33,7 +33,7 @@ const DropdownSelect = (props) => {
 
   const menuItems = options.map((o, index) => (
     <MenuItem className={classes.menuItem} key={`${o} ${index}`} value={o}>
-      {o}
+      {o.charAt(0).toUpperCase() + o.slice(1)}
     </MenuItem>
   ));
 

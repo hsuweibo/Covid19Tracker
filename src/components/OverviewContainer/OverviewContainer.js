@@ -1,17 +1,11 @@
 import React, { Component } from "react";
 import { Card, CardContent, Typography, Grid } from "@material-ui/core";
 
-import { withStyles } from "@material-ui/core/styles";
+import { getOverviewData } from "../../Data/WorldometersData";
 
 import CountBox from "../CountBox/CountBox";
 import Spinner from "../UI/Spinner/Spinner";
 import DropdownSelect from "../UI/DropdownSelect/DropdownSelect";
-
-const styles = (theme) => ({
-  root: {
-    margin: "2em",
-  },
-});
 
 class OverviewContainer extends Component {
   state = {
@@ -21,53 +15,13 @@ class OverviewContainer extends Component {
   };
 
   componentDidMount() {
-    fetch("https://disease.sh/v3/covid-19/countries?yesterday=true")
-      .then((response) => response.json())
-      .then((fetchedData) => {
-        const newData = {};
-        for (let datum of fetchedData) {
-          newData[datum.country] = {
-            cases: datum.cases,
-            newCases: datum.todayCases,
-            deaths: datum.deaths,
-            newDeaths: datum.todayDeaths,
-            recovered: datum.recovered,
-            newRecovered: datum.todayRecovered,
-          };
-        }
-        this.setState({ data: newData });
-      })
-      .then(() => {
-        return fetch("https://disease.sh/v3/covid-19/all?yesterday=true")
-          .then((response) => response.json())
-          .then((fetchedData) => {
-            const {
-              cases,
-              todayCases: newCases,
-              deaths,
-              todayDeaths: newDeaths,
-              recovered,
-              todayRecovered: newRecovered,
-            } = fetchedData;
-            const worldwideData = {
-              cases,
-              newCases,
-              deaths,
-              newDeaths,
-              recovered,
-              newRecovered,
-            };
-            this.setState((prevState) => {
-              const newState = {
-                ...prevState,
-                selectedCountry: "Worldwide",
-                data: { Worldwide: worldwideData, ...prevState.data },
-                loadComplete: true,
-              };
-              return newState;
-            });
-          });
+    getOverviewData().then((data) => {
+      this.setState({
+        data: data,
+        loadComplete: true,
+        selectedCountry: "Worldwide",
       });
+    });
   }
 
   countrySelectHandler = (event) => {
@@ -75,7 +29,6 @@ class OverviewContainer extends Component {
   };
 
   render() {
-    const { classes } = this.props;
     let content;
     if (!this.state.loadComplete) {
       content = <Spinner></Spinner>;
@@ -96,7 +49,7 @@ class OverviewContainer extends Component {
         <React.Fragment>
           {countryDropdownSelect}
 
-          <Grid container className={classes.panel}>
+          <Grid container>
             <Grid item xs={12} sm={4}>
               <CountBox
                 countType="cases"
@@ -123,7 +76,7 @@ class OverviewContainer extends Component {
       );
     }
     return (
-      <Card className={classes.root}>
+      <Card>
         <CardContent>
           <Typography variant="h4" align="center">
             Cases Overview
@@ -135,4 +88,4 @@ class OverviewContainer extends Component {
   }
 }
 
-export default withStyles(styles)(OverviewContainer);
+export default OverviewContainer;

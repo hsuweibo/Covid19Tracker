@@ -1,7 +1,6 @@
 import React from "react";
 import { Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import styles from "./CountBox.module.css";
 import numeral from "numeral-es6";
 
 const useStyle = makeStyles((theme) => ({
@@ -39,10 +38,10 @@ const CountBox = (props) => {
       <div className={classes.highlight}></div>
       <Typography variant="body1">New {props.countType}</Typography>
       <Typography variant="h5">
-        {numeral(props.newCount).format("0.00a")}
+        {numeral(props.newCount).format("0.[00]a")}
       </Typography>
       <Typography variant="body1" color="textSecondary">
-        {numeral(props.totalCount).format("0.00a")} total
+        {numeral(props.totalCount).format("0.[00]a")} total
       </Typography>
     </div>
   );
