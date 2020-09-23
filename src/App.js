@@ -32,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
   },
 
   overviewGridItem: {
-    gridColumn: "1/8",
+    gridColumn: "1/9",
     gridRow: "1/2",
     [theme.breakpoints.down("sm")]: {
       gridColumn: "1/13",
@@ -40,7 +40,7 @@ const useStyles = makeStyles((theme) => ({
   },
 
   chartGridItem: {
-    gridColumn: "1/8",
+    gridColumn: "1/9",
     gridRow: "2/3",
     [theme.breakpoints.down("sm")]: {
       gridColumn: "1/13",
@@ -48,7 +48,7 @@ const useStyles = makeStyles((theme) => ({
   },
 
   listGridItem: {
-    gridColumn: "8 /13",
+    gridColumn: "9 /13",
     gridRow: "1/3",
     [theme.breakpoints.down("sm")]: {
       gridColumn: "1/13",

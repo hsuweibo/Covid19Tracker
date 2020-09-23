@@ -89,13 +89,18 @@ function EnhancedTableHead(props) {
 const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
+    flexGrow: 1,
   },
   paper: {
     width: "100%",
     marginBottom: theme.spacing(2),
     marginTop: theme.spacing(2),
-    // minHeight: "100%",
-    // height: "0"
+    minHeight: "100%",
+    height: "0",
+  },
+
+  container: {
+    height: "100%",
   },
 
   visuallyHidden: {
@@ -133,7 +138,7 @@ export default function EnhancedTable({ data }) {
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
-        <TableContainer>
+        <TableContainer className={classes.container}>
           <Table
             stickyHeader
             className={classes.table}

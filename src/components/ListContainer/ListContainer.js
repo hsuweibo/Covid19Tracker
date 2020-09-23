@@ -9,7 +9,14 @@ const styles = {
   root: {
     height: "400px",
     minHeight: "100%",
-    overflowY: "scroll",
+  },
+
+  cardContent: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    boxSizing: "border-box",
+    height: "100%",
   },
 };
 
@@ -50,8 +57,8 @@ class ListContainer extends Component {
     }
 
     return (
-      <Card className={classes.root + " " + this.props.className}>
-        <CardContent>
+      <Card className={classes.root}>
+        <CardContent className={classes.cardContent}>
           <Typography variant="h4">Cases by Country</Typography>
           {items}
           {/* <table>
