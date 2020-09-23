@@ -1,5 +1,19 @@
 /* Return a Promise. The resolved value is an object mapping each country to a collection of data: 
-today's new, and total accumulated death/recovered/cases count. */
+today's new, and total accumulated death/recovered/cases count. 
+The object has the form: 
+{
+  [country1]: {
+    cases: ...,
+    newCases: ...,
+    deaths: ...,
+    newDeaths: ...,
+    recovered: ...,
+    newRecovered: ...,
+  },
+  ...,
+  'Worldwide': {...}
+}
+*/
 export const getOverviewData = () => {
   return fetch("https://disease.sh/v3/covid-19/countries?yesterday=true")
     .then((response) => response.json())
@@ -14,6 +28,7 @@ export const getOverviewData = () => {
           newDeaths: datum.todayDeaths,
           recovered: datum.recovered,
           newRecovered: datum.todayRecovered,
+          flag: datum.countryInfo.flag,
         };
       }
       return processedData;
