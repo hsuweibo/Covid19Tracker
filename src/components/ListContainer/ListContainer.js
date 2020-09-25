@@ -5,20 +5,37 @@ import { getOverviewData } from "../../Data/WorldometersData";
 import Spinner from "../UI/Spinner/Spinner";
 import EnhancedTable from "../Table/Table";
 
-const styles = {
+const styles = (theme) => ({
   root: {
-    height: "400px",
-    minHeight: "100%",
+    height: "100%",
   },
 
   cardContent: {
     display: "flex",
     flexDirection: "column",
-    alignItems: "center",
+    alignItems: "stretch",
     boxSizing: "border-box",
     height: "100%",
   },
-};
+
+  titleFlexItem: {
+    flex: "0 0 auto",
+    flexBasis: "auto",
+  },
+
+  tableFlexItem: {
+    flex: "1 0 auto",
+    paddingTop: theme.spacing(2),
+  },
+
+  // Set the height to 0, so that for the calculation of the entire column this component is in, this component's table's height is not taken into account.
+  // Set the min-height to 100%, so that once the column height's is resolved/computed and rendered,
+  // the tableRoot fills the height of the flex item (which flex-grows to fill the remaining height of the flex-container, which is set to 100% height of the column)
+  tableRoot: {
+    minHeight: "100%",
+    height: "0",
+  },
+});
 
 class ListContainer extends Component {
   state = {
@@ -34,36 +51,29 @@ class ListContainer extends Component {
 
   render() {
     const classes = this.props.classes;
-    let items;
+    let table;
     if (!this.state.loadComplete) {
-      items = (
-        <Spinner />
-        // <tr>
-        //   <td>
-        //     <Spinner />
-        //   </td>
-        // </tr>
-      );
+      table = <Spinner />;
     } else {
-      // items = Object.keys(this.state.data).map((country) => {
-      //   return (
-      //     <tr key={country}>
-      //       <td>{country}</td>
-      //       <td>{this.state.data[country].cases}</td>
-      //     </tr>
-      //   );
-      // });
-      items = <EnhancedTable data={this.state.data} />;
+      table = (
+        <EnhancedTable
+          data={this.state.data}
+          classes={{
+            root: classes.tableRoot,
+          }}
+        />
+      );
     }
 
     return (
       <Card className={classes.root}>
         <CardContent className={classes.cardContent}>
-          <Typography variant="h4">Cases by Country</Typography>
-          {items}
-          {/* <table>
-            <tbody>{items}</tbody>
-          </table> */}
+          <div className={classes.titleFlexItem}>
+            <Typography variant="h4" align="center">
+              Cases by Country
+            </Typography>
+          </div>
+          <div className={classes.tableFlexItem}>{table}</div>
         </CardContent>
       </Card>
     );

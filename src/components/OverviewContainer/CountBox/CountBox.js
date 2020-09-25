@@ -1,7 +1,10 @@
 import React from "react";
 import { Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
+import PropTypes from "prop-types";
 import numeral from "numeral-es6";
+
+import * as CountTypes from "../../../Constants/CountTypes";
 
 const useStyle = makeStyles((theme) => ({
   root: {
@@ -22,9 +25,9 @@ const useStyle = makeStyles((theme) => ({
     height: "5px",
     backgroundColor: (props) => {
       const mapping = {
-        cases: theme.palette.info.main,
-        deaths: theme.palette.error.main,
-        recovered: theme.palette.success.main,
+        [CountTypes.ACTIVE]: theme.palette.info.main,
+        [CountTypes.DEATHS]: theme.palette.error.main,
+        [CountTypes.RECOVERED]: theme.palette.success.main,
       };
       return mapping[props.countType];
     },
@@ -33,10 +36,25 @@ const useStyle = makeStyles((theme) => ({
 
 const CountBox = (props) => {
   const classes = useStyle(props);
+  let title;
+  switch (props.countType) {
+    case CountTypes.ACTIVE:
+      title = "New cases";
+      break;
+    case CountTypes.DEATHS:
+      title = "New deaths";
+      break;
+    case CountTypes.RECOVERED:
+      title = "New recovered";
+      break;
+    default:
+      title = "Unknown";
+  }
+
   return (
     <div className={classes.root}>
       <div className={classes.highlight}></div>
-      <Typography variant="body1">New {props.countType}</Typography>
+      <Typography variant="body1">{title}</Typography>
       <Typography variant="h5">
         {numeral(props.newCount).format("0.[00]a")}
       </Typography>
@@ -48,3 +66,13 @@ const CountBox = (props) => {
 };
 
 export default CountBox;
+
+CountBox.propTypes = {
+  countType: PropTypes.oneOf([
+    CountTypes.RECOVERED,
+    CountTypes.DEATHS,
+    CountTypes.ACTIVE,
+  ]),
+  newCount: PropTypes.number,
+  totalCount: PropTypes.number,
+};

@@ -89,14 +89,6 @@ function EnhancedTableHead(props) {
 const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
-    flexGrow: 1,
-  },
-  paper: {
-    width: "100%",
-    marginBottom: theme.spacing(2),
-    marginTop: theme.spacing(2),
-    minHeight: "100%",
-    height: "0",
   },
 
   container: {
@@ -116,14 +108,15 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function EnhancedTable({ data }) {
+export default function EnhancedTable(props) {
+  const { data } = props;
   const rows = Object.keys(data).map((country) => ({
     country: country,
     cases: data[country].cases,
     flag: data[country].flag,
   }));
 
-  const classes = useStyles();
+  const classes = useStyles(props);
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState("country");
 
@@ -136,40 +129,40 @@ export default function EnhancedTable({ data }) {
   };
 
   return (
-    <div className={classes.root}>
-      <Paper className={classes.paper}>
-        <TableContainer className={classes.container}>
-          <Table
-            stickyHeader
-            className={classes.table}
-            aria-labelledby="tableTitle"
-            size="small"
-            aria-label="enhanced table"
-          >
-            <EnhancedTableHead
-              classes={classes}
-              order={order}
-              orderBy={orderBy}
-              onRequestSort={handleRequestSort}
-            />
-            <TableBody>
-              {stableSort(rows, getComparator(order, orderBy)).map(
-                (row, index) => {
-                  const labelId = `enhanced-table-checkbox-${index}`;
+    <Paper className={classes.root}>
+      <TableContainer className={classes.container}>
+        <Table
+          stickyHeader
+          className={classes.table}
+          aria-labelledby="tableTitle"
+          size="small"
+          aria-label="enhanced table"
+        >
+          <EnhancedTableHead
+            classes={classes}
+            order={order}
+            orderBy={orderBy}
+            onRequestSort={handleRequestSort}
+          />
+          <TableBody>
+            {stableSort(rows, getComparator(order, orderBy)).map(
+              (row, index) => {
+                const labelId = `enhanced-table-checkbox-${index}`;
 
-                  return (
-                    <TableRow
-                      hover
-                      role="checkbox"
-                      tabIndex={-1}
-                      key={row.country}
+                return (
+                  <TableRow
+                    hover
+                    role="checkbox"
+                    tabIndex={-1}
+                    key={row.country}
+                  >
+                    <TableCell
+                      component="th"
+                      id={labelId}
+                      scope="row"
+                      padding="default"
                     >
-                      <TableCell
-                        component="th"
-                        id={labelId}
-                        scope="row"
-                        padding="default"
-                      >
+                      <div style={{ display: "flex", alignItems: "center" }}>
                         <img
                           src={row.flag}
                           alt="flag"
@@ -180,18 +173,18 @@ export default function EnhancedTable({ data }) {
                           }}
                         ></img>
                         {row.country}
-                      </TableCell>
-                      <TableCell align="right">
-                        {numeral(row.cases).format("0,0")}
-                      </TableCell>
-                    </TableRow>
-                  );
-                }
-              )}
-            </TableBody>
-          </Table>
-        </TableContainer>
-      </Paper>
-    </div>
+                      </div>
+                    </TableCell>
+                    <TableCell align="right">
+                      {numeral(row.cases).format("0,0")}
+                    </TableCell>
+                  </TableRow>
+                );
+              }
+            )}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </Paper>
   );
 }

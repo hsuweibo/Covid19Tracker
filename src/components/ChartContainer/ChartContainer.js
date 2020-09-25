@@ -1,10 +1,25 @@
 import React, { Component } from "react";
-import { Card, CardContent, Typography } from "@material-ui/core";
-import HistoryChart from "../HistoryChart/HistoryChart";
+import { Card, CardContent, Typography, withStyles } from "@material-ui/core";
+import HistoryChart from "./HistoryChart/HistoryChart";
 import Spinner from "../UI/Spinner/Spinner";
-import DropdownSelect from "../UI/DropdownSelect/DropdownSelect";
+
+import CountrySelect from "../UI/DropdownSelect/CountrySelect";
+import DataTypeSelect from "../UI/DropdownSelect/DataTypeSelect";
 
 import { getHistoricalData } from "../../Data/JHUData";
+import * as CountTypes from "../../Constants/CountTypes";
+import * as Countries from "../../Constants/Countries";
+
+const styles = {
+  selectBar: {
+    display: "flex",
+    margin: "8px 0px",
+  },
+
+  countrySelect: {
+    marginLeft: 5,
+  },
+};
 
 class ChartContainer extends Component {
   state = {
@@ -19,18 +34,18 @@ class ChartContainer extends Component {
       this.setState({
         data: data,
         loadComplete: true,
-        selectedCountry: "Worldwide",
-        selectedDataType: "cases",
+        selectedCountry: Countries.WORLDWIDE,
+        selectedDataType: CountTypes.ACTIVE,
       })
     );
   }
 
-  dataTypeSelectHandler = (event) => {
-    this.setState({ selectedDataType: event.target.value });
+  dataTypeSelectHandler = (_event, value) => {
+    this.setState({ selectedDataType: value });
   };
 
-  countrySelectHandler = (event) => {
-    this.setState({ selectedCountry: event.target.value });
+  countrySelectHandler = (_event, value) => {
+    this.setState({ selectedCountry: value });
   };
 
   render() {
@@ -40,18 +55,23 @@ class ChartContainer extends Component {
     } else {
       content = (
         <React.Fragment>
-          <DropdownSelect
-            label="Category"
-            options={["cases", "deaths", "recovered"]}
-            defaultValue={this.state.selectedDataType}
-            onSelectChange={this.dataTypeSelectHandler}
-          />
-          <DropdownSelect
-            label="Country"
-            options={Object.keys(this.state.data)}
-            defaultValue={this.state.selectedCountry}
-            onSelectChange={this.countrySelectHandler}
-          />
+          <div className={this.props.classes.selectBar}>
+            <DataTypeSelect
+              types={[
+                CountTypes.ACTIVE,
+                CountTypes.DEATHS,
+                CountTypes.RECOVERED,
+              ]}
+              defaultValue={CountTypes.ACTIVE}
+              onSelect={this.dataTypeSelectHandler}
+            />
+            <CountrySelect
+              countries={Object.keys(this.state.data)}
+              onSelect={this.countrySelectHandler}
+              defaultValue={Countries.WORLDWIDE}
+              classes={{ root: this.props.classes.countrySelect }}
+            />
+          </div>
 
           <HistoryChart
             dataType={this.state.selectedDataType}
@@ -82,4 +102,4 @@ class ChartContainer extends Component {
   }
 }
 
-export default ChartContainer;
+export default withStyles(styles)(ChartContainer);

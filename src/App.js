@@ -22,7 +22,7 @@ const theme = createMuiTheme({
 });
 
 const useStyles = makeStyles((theme) => ({
-  container: {
+  gridContainer: {
     display: "grid",
     gridTemplateColumns: "repeat(12, 1fr)",
     gridGap: "15px",
@@ -33,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
 
   overviewGridItem: {
     gridColumn: "1/9",
-    gridRow: "1/2",
+    gridRow: "2/3",
     [theme.breakpoints.down("sm")]: {
       gridColumn: "1/13",
     },
@@ -41,7 +41,7 @@ const useStyles = makeStyles((theme) => ({
 
   chartGridItem: {
     gridColumn: "1/9",
-    gridRow: "2/3",
+    gridRow: "3/4",
     [theme.breakpoints.down("sm")]: {
       gridColumn: "1/13",
     },
@@ -49,11 +49,22 @@ const useStyles = makeStyles((theme) => ({
 
   listGridItem: {
     gridColumn: "9 /13",
-    gridRow: "1/3",
+    gridRow: "2/4",
     [theme.breakpoints.down("sm")]: {
       gridColumn: "1/13",
-      gridRow: "3/4",
+      gridRow: "4/5",
+      height: "500px",
     },
+  },
+
+  appBar: {
+    gridColumn: "1 /13",
+    gridRow: "1/2",
+  },
+
+  footer: {
+    gridColumn: "1/13",
+    gridRow: "5/6",
   },
 }));
 
@@ -62,18 +73,19 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <StylesProvider injectFirst>
-        <AppBar position="static">
-          <Toolbar>
-            <Typography
-              variant="h4"
-              style={{ flexGrow: 1, textAlign: "center" }}
-            >
-              <i className="fas fa-virus"></i> COVID-19 TRACKER
-            </Typography>
-          </Toolbar>
-        </AppBar>
-
-        <div className={classes.container}>
+        <div className={classes.gridContainer}>
+          <div className={classes.appBar}>
+            <AppBar position="static">
+              <Toolbar>
+                <Typography
+                  variant="h4"
+                  style={{ flexGrow: 1, textAlign: "center" }}
+                >
+                  <i className="fas fa-virus"></i> COVID-19 TRACKER
+                </Typography>
+              </Toolbar>
+            </AppBar>
+          </div>
           <div className={classes.overviewGridItem}>
             <OverviewContainer />
           </div>
@@ -82,6 +94,11 @@ function App() {
           </div>
           <div className={classes.listGridItem}>
             <ListContainer />
+          </div>
+          <div className={classes.footer}>
+            <Typography color="textSecondary" align="center" variant="body2">
+              Covid-19 Tracker is powered by React and the disease.sh API
+            </Typography>
           </div>
         </div>
       </StylesProvider>

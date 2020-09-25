@@ -1,3 +1,6 @@
+import * as Countries from "../Constants/Countries";
+import * as CountTypes from "../Constants/CountTypes";
+
 /* Return a promise object. The resolved value is an object that maps each country to its daily change data. 
 The object has the form
 {
@@ -18,23 +21,25 @@ const getHistoricalData = () => {
         const country = datum.country;
         if (!processedData[country]) {
           processedData[country] = {
-            cases: accumulatedToDelta(datum.timeline.cases),
-            deaths: accumulatedToDelta(datum.timeline.deaths),
-            recovered: accumulatedToDelta(datum.timeline.recovered),
+            [CountTypes.ACTIVE]: accumulatedToDelta(datum.timeline.cases),
+            [CountTypes.DEATHS]: accumulatedToDelta(datum.timeline.deaths),
+            [CountTypes.RECOVERED]: accumulatedToDelta(
+              datum.timeline.recovered
+            ),
           };
         } else {
           mergeDelta(
-            processedData[country].cases,
+            processedData[country][CountTypes.ACTIVE],
             accumulatedToDelta(datum.timeline.cases)
           );
 
           mergeDelta(
-            processedData[country].deaths,
+            processedData[country][CountTypes.DEATHS],
             accumulatedToDelta(datum.timeline.deaths)
           );
 
           mergeDelta(
-            processedData[country].recovered,
+            processedData[country][CountTypes.RECOVERED],
             accumulatedToDelta(datum.timeline.recovered)
           );
         }
@@ -46,11 +51,11 @@ const getHistoricalData = () => {
         .then((response) => response.json())
         .then((fetchedData) => {
           const worldwideData = {
-            cases: accumulatedToDelta(fetchedData.cases),
-            deaths: accumulatedToDelta(fetchedData.deaths),
-            recovered: accumulatedToDelta(fetchedData.recovered),
+            [CountTypes.ACTIVE]: accumulatedToDelta(fetchedData.cases),
+            [CountTypes.DEATHS]: accumulatedToDelta(fetchedData.deaths),
+            [CountTypes.RECOVERED]: accumulatedToDelta(fetchedData.recovered),
           };
-          processedData["Worldwide"] = worldwideData;
+          processedData[Countries.WORLDWIDE] = worldwideData;
           return processedData;
         })
     );

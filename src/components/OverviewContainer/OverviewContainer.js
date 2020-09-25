@@ -3,9 +3,11 @@ import { Card, CardContent, Typography, Grid } from "@material-ui/core";
 
 import { getOverviewData } from "../../Data/WorldometersData";
 
-import CountBox from "../CountBox/CountBox";
+import CountBox from "./CountBox/CountBox";
 import Spinner from "../UI/Spinner/Spinner";
-import DropdownSelect from "../UI/DropdownSelect/DropdownSelect";
+import CountrySelect from "../Select/CountrySelect";
+import * as CountTypes from "../../Constants/CountTypes";
+import * as Countries from "../../Constants/Countries";
 
 class OverviewContainer extends Component {
   state = {
@@ -19,13 +21,13 @@ class OverviewContainer extends Component {
       this.setState({
         data: data,
         loadComplete: true,
-        selectedCountry: "Worldwide",
+        selectedCountry: Countries.WORLDWIDE, //The default selected country once loaded
       });
     });
   }
 
-  countrySelectHandler = (event) => {
-    this.setState({ selectedCountry: event.target.value });
+  countrySelectHandler = (event, value) => {
+    this.setState({ selectedCountry: value });
   };
 
   render() {
@@ -33,42 +35,41 @@ class OverviewContainer extends Component {
     if (!this.state.loadComplete) {
       content = <Spinner></Spinner>;
     } else {
-      const countryNames = Object.keys(this.state.data);
-      const countryDropdownSelect = (
-        <DropdownSelect
-          label="Country"
-          defaultValue={this.state.selectedCountry}
-          onSelectChange={this.countrySelectHandler}
-          options={countryNames}
-        />
+      const countrySelect = (
+        <div style={{ marginTop: "8px", marginBottom: "2em" }}>
+          <CountrySelect
+            countries={Object.keys(this.state.data)}
+            onSelect={this.countrySelectHandler}
+            value={this.state.selectedCountry}
+          />
+        </div>
       );
 
       const selectedCountryData = this.state.data[this.state.selectedCountry];
-      console.log(selectedCountryData);
       content = (
         <React.Fragment>
-          {countryDropdownSelect}
+          {countrySelect}
 
           <Grid container>
             <Grid item xs={12} sm={4}>
               <CountBox
-                countType="cases"
-                newCount={selectedCountryData.newCases}
-                totalCount={selectedCountryData.cases}
+                countType={CountTypes.ACTIVE}
+                newCount={selectedCountryData[CountTypes.NEW_ACTIVE]}
+                totalCount={selectedCountryData[CountTypes.ACTIVE]}
               ></CountBox>
             </Grid>
             <Grid item xs={12} sm={4}>
               <CountBox
-                countType="deaths"
-                newCount={selectedCountryData.newDeaths}
-                totalCount={selectedCountryData.deaths}
+                countType={CountTypes.DEATHS}
+                newCount={selectedCountryData[CountTypes.NEW_DEATHS]}
+                totalCount={selectedCountryData[CountTypes.DEATHS]}
               ></CountBox>
             </Grid>
             <Grid item xs={12} sm={4}>
               <CountBox
-                countType="recovered"
-                newCount={selectedCountryData.newRecovered}
-                totalCount={selectedCountryData.recovered}
+                countType={CountTypes.RECOVERED}
+                newCount={selectedCountryData[CountTypes.NEW_RECOVERED]}
+                totalCount={selectedCountryData[CountTypes.RECOVERED]}
               ></CountBox>
             </Grid>
           </Grid>

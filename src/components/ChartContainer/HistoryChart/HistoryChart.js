@@ -1,17 +1,18 @@
 import { blue, red, green } from "@material-ui/core/colors";
 import Chart from "chart.js";
 import React, { Component } from "react";
+import * as CountTypes from "../../../Constants/CountTypes";
 
 const settings = {
-  cases: {
+  [CountTypes.ACTIVE]: {
     borderColor: blue["A100"],
     backgroundColor: blue[200],
   },
-  deaths: {
+  [CountTypes.DEATHS]: {
     borderColor: red["A100"],
     backgroundColor: red[200],
   },
-  recovered: {
+  [CountTypes.RECOVERED]: {
     borderColor: green["A100"],
     backgroundColor: green[200],
   },
@@ -82,7 +83,7 @@ class HistoryChart extends Component {
 
   render() {
     return (
-      <div style={{ position: "relative" }}>
+      <div>
         <canvas ref={this.canvasRef}></canvas>
       </div>
     );
