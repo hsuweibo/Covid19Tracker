@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 import { Card, CardContent, Typography, withStyles } from "@material-ui/core";
-import HistoryChart from "./HistoryChart/HistoryChart";
+import DailyChangeChart from "./DailyChangeChart/DailyChangeChart";
 import Spinner from "../UI/Spinner/Spinner";
 
-import CountrySelect from "../UI/DropdownSelect/CountrySelect";
-import DataTypeSelect from "../UI/DropdownSelect/DataTypeSelect";
+import CountrySelect from "../Select/CountrySelect";
+import CountTypeSelect from "../Select/CountTypeSelect";
 
 import { getHistoricalData } from "../../Data/JHUData";
 import * as CountTypes from "../../Constants/CountTypes";
@@ -24,7 +24,7 @@ const styles = {
 class ChartContainer extends Component {
   state = {
     selectedCountry: null,
-    selectedDataType: null,
+    selectedCountType: null,
     data: null,
     loadComplete: false,
   };
@@ -35,13 +35,13 @@ class ChartContainer extends Component {
         data: data,
         loadComplete: true,
         selectedCountry: Countries.WORLDWIDE,
-        selectedDataType: CountTypes.ACTIVE,
+        selectedCountType: CountTypes.ACTIVE,
       })
     );
   }
 
-  dataTypeSelectHandler = (_event, value) => {
-    this.setState({ selectedDataType: value });
+  countTypeSelectHandler = (_event, value) => {
+    this.setState({ selectedCountType: value });
   };
 
   countrySelectHandler = (_event, value) => {
@@ -56,36 +56,31 @@ class ChartContainer extends Component {
       content = (
         <React.Fragment>
           <div className={this.props.classes.selectBar}>
-            <DataTypeSelect
-              types={[
+            <CountTypeSelect
+              countTypes={[
                 CountTypes.ACTIVE,
                 CountTypes.DEATHS,
                 CountTypes.RECOVERED,
               ]}
-              defaultValue={CountTypes.ACTIVE}
-              onSelect={this.dataTypeSelectHandler}
+              value={this.state.selectedCountType}
+              onSelect={this.countTypeSelectHandler}
             />
             <CountrySelect
               countries={Object.keys(this.state.data)}
               onSelect={this.countrySelectHandler}
-              defaultValue={Countries.WORLDWIDE}
+              value={this.state.selectedCountry}
               classes={{ root: this.props.classes.countrySelect }}
             />
           </div>
 
-          <HistoryChart
-            dataType={this.state.selectedDataType}
-            labels={Object.keys(
+          <DailyChangeChart
+            countType={this.state.selectedCountType}
+            data={
               this.state.data[this.state.selectedCountry][
-                this.state.selectedDataType
+                this.state.selectedCountType
               ]
-            )}
-            data={Object.values(
-              this.state.data[this.state.selectedCountry][
-                this.state.selectedDataType
-              ]
-            )}
-          ></HistoryChart>
+            }
+          />
         </React.Fragment>
       );
     }

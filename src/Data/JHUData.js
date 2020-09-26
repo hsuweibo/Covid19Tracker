@@ -19,29 +19,31 @@ const getHistoricalData = () => {
       const processedData = {};
       for (let datum of fetchedData) {
         const country = datum.country;
-        if (!processedData[country]) {
-          processedData[country] = {
-            [CountTypes.ACTIVE]: accumulatedToDelta(datum.timeline.cases),
-            [CountTypes.DEATHS]: accumulatedToDelta(datum.timeline.deaths),
-            [CountTypes.RECOVERED]: accumulatedToDelta(
-              datum.timeline.recovered
-            ),
-          };
-        } else {
-          mergeDelta(
-            processedData[country][CountTypes.ACTIVE],
-            accumulatedToDelta(datum.timeline.cases)
-          );
+        if (!filterList.includes(country)) {
+          if (!processedData[country]) {
+            processedData[country] = {
+              [CountTypes.ACTIVE]: accumulatedToDelta(datum.timeline.cases),
+              [CountTypes.DEATHS]: accumulatedToDelta(datum.timeline.deaths),
+              [CountTypes.RECOVERED]: accumulatedToDelta(
+                datum.timeline.recovered
+              ),
+            };
+          } else {
+            mergeDelta(
+              processedData[country][CountTypes.ACTIVE],
+              accumulatedToDelta(datum.timeline.cases)
+            );
 
-          mergeDelta(
-            processedData[country][CountTypes.DEATHS],
-            accumulatedToDelta(datum.timeline.deaths)
-          );
+            mergeDelta(
+              processedData[country][CountTypes.DEATHS],
+              accumulatedToDelta(datum.timeline.deaths)
+            );
 
-          mergeDelta(
-            processedData[country][CountTypes.RECOVERED],
-            accumulatedToDelta(datum.timeline.recovered)
-          );
+            mergeDelta(
+              processedData[country][CountTypes.RECOVERED],
+              accumulatedToDelta(datum.timeline.recovered)
+            );
+          }
         }
       }
       return processedData;
@@ -83,3 +85,6 @@ const mergeDelta = (delta1, delta2) => {
 };
 
 export { getHistoricalData };
+
+// These are "country names" returned by the JHU API, however, these are not real countries.
+const filterList = ["MS Zaandam", "Diamond Princess"];
