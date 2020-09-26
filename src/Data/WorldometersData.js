@@ -1,5 +1,6 @@
 import * as Countries from "../Constants/Countries";
 import * as CountTypes from "../Constants/CountTypes";
+import GlobePic from "../assets/globe.jpg";
 
 /* Return a Promise. The resolved value is an object mapping each country to a collection of data: 
 today's new, and total accumulated death/recovered/cases count. 
@@ -50,6 +51,7 @@ export const getOverviewData = () => {
             [CountTypes.NEW_DEATHS]: fetchedData.todayDeaths,
             [CountTypes.RECOVERED]: fetchedData.recovered,
             [CountTypes.NEW_RECOVERED]: fetchedData.todayRecovered,
+            flag: GlobePic,
           };
 
           processedData[Countries.WORLDWIDE] = worldwideData;

@@ -4,6 +4,8 @@ import { makeStyles } from "@material-ui/core/styles";
 import PropTypes from "prop-types";
 import numeral from "numeral-es6";
 
+import { blue, red, green } from "@material-ui/core/colors";
+
 import * as CountTypes from "../../../Constants/CountTypes";
 
 const useStyle = makeStyles((theme) => ({
@@ -25,9 +27,9 @@ const useStyle = makeStyles((theme) => ({
     height: "5px",
     backgroundColor: (props) => {
       const mapping = {
-        [CountTypes.ACTIVE]: theme.palette.info.main,
-        [CountTypes.DEATHS]: theme.palette.error.main,
-        [CountTypes.RECOVERED]: theme.palette.success.main,
+        [CountTypes.ACTIVE]: blue["A200"],
+        [CountTypes.DEATHS]: red["A200"],
+        [CountTypes.RECOVERED]: green["A200"],
       };
       return mapping[props.countType];
     },

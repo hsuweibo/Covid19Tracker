@@ -11,17 +11,21 @@ const useStyles = makeStyles({
   option: {
     fontSize: "1rem",
   },
+
+  root: {
+    width: "150px",
+  },
 });
 
 export default function CountTypeSelect(props) {
-  const classes = useStyles();
+  const classes = useStyles(props);
 
   return (
     <Autocomplete
-      style={{ width: 100 }}
       options={props.countTypes}
       classes={{
         option: classes.option,
+        root: classes.root,
       }}
       value={props.value}
       disableClearable

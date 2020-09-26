@@ -3,7 +3,9 @@ import { Card, CardContent, Typography } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 import { getOverviewData } from "../../Data/WorldometersData";
 import Spinner from "../UI/Spinner/Spinner";
-import EnhancedTable from "../Table/Table";
+import CountryCountTable from "./CountryCountTable/CountryCountTable";
+
+import * as CountTypes from "../../Constants/CountTypes";
 
 const styles = (theme) => ({
   root: {
@@ -49,6 +51,13 @@ class ListContainer extends Component {
     );
   }
 
+  convertDataToRows = () => {
+    return Object.keys(this.state.data).map((country) => ({
+      country,
+      ...this.state.data[country],
+    }));
+  };
+
   render() {
     const classes = this.props.classes;
     let table;
@@ -56,8 +65,10 @@ class ListContainer extends Component {
       table = <Spinner />;
     } else {
       table = (
-        <EnhancedTable
-          data={this.state.data}
+        <CountryCountTable
+          selectedColumns={[CountTypes.ACTIVE]}
+          defaultOrderBy={CountTypes.ACTIVE}
+          rows={this.convertDataToRows()}
           classes={{
             root: classes.tableRoot,
           }}

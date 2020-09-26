@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Card, CardContent, Typography, Grid } from "@material-ui/core";
+import { withStyles } from "@material-ui/core/styles";
 
 import { getOverviewData } from "../../Data/WorldometersData";
 
@@ -8,6 +9,14 @@ import Spinner from "../UI/Spinner/Spinner";
 import CountrySelect from "../Select/CountrySelect";
 import * as CountTypes from "../../Constants/CountTypes";
 import * as Countries from "../../Constants/Countries";
+
+const styles = (theme) => ({
+  countrySelect: {
+    [theme.breakpoints.down("sm")]: {
+      width: "100%",
+    },
+  },
+});
 
 class OverviewContainer extends Component {
   state = {
@@ -41,6 +50,7 @@ class OverviewContainer extends Component {
             countries={Object.keys(this.state.data)}
             onSelect={this.countrySelectHandler}
             value={this.state.selectedCountry}
+            classes={{ root: this.props.classes.countrySelect }}
           />
         </div>
       );
@@ -89,4 +99,4 @@ class OverviewContainer extends Component {
   }
 }
 
-export default OverviewContainer;
+export default withStyles(styles)(OverviewContainer);

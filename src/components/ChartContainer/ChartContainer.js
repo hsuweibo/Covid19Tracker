@@ -10,16 +10,28 @@ import { getHistoricalData } from "../../Data/JHUData";
 import * as CountTypes from "../../Constants/CountTypes";
 import * as Countries from "../../Constants/Countries";
 
-const styles = {
+const styles = (theme) => ({
   selectBar: {
     display: "flex",
+    flexWrap: "wrap",
     margin: "8px 0px",
   },
 
   countrySelect: {
     marginLeft: 5,
+    [theme.breakpoints.down("sm")]: {
+      width: "100%",
+      marginLeft: 0,
+      marginTop: "1em",
+    },
   },
-};
+
+  countTypeSelect: {
+    [theme.breakpoints.down("sm")]: {
+      width: "100%",
+    },
+  },
+});
 
 class ChartContainer extends Component {
   state = {
@@ -64,6 +76,7 @@ class ChartContainer extends Component {
               ]}
               value={this.state.selectedCountType}
               onSelect={this.countTypeSelectHandler}
+              classes={{ root: this.props.classes.countTypeSelect }}
             />
             <CountrySelect
               countries={Object.keys(this.state.data)}
