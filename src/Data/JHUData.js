@@ -64,14 +64,14 @@ const getHistoricalData = () => {
 };
 
 /* Given an object with cumulated counts up to each date, calculate and convert to an object mapping each date to the incremental difference
-of that day's count relative to the day before. The first day is skipped.
-E.g. {0901: 3, 0902:10, 0903:12} is converted to {0902:7, 0903:2} */
+of that day's count relative to the day before. The first day is skipped. ISO formatted date string is used in the returned object.
+E.g. {9/1/20: 3, 9/2/20:10, 9/3/20:12} is converted to {2020-09-02:7, 2020-09-03:2} */
 const accumulatedToDelta = (originalData) => {
   const delta = {};
   let prevCount = null;
   for (const [currDate, currCount] of Object.entries(originalData)) {
     if (prevCount !== null) {
-      delta[currDate] = currCount - prevCount;
+      delta[toISODateStr(currDate)] = currCount - prevCount;
     }
     prevCount = currCount;
   }
@@ -82,6 +82,23 @@ const mergeDelta = (delta1, delta2) => {
   for (const date of Object.keys(delta1)) {
     delta1[date] += delta2[date];
   }
+};
+
+/* Convert the given date string format to ISO compliant date string format.
+For example, from '09/13/20' to '2020-09-13'
+*/
+const toISODateStr = (dateString) => {
+  const pattern = /^(?<month>\d?\d)\/(?<day>\d?\d)\/(?<year>\d\d)$/;
+  const match = dateString.match(pattern);
+  const year = `20${match.groups.year}`;
+  const month =
+    match.groups.month.length === 1
+      ? `0${match.groups.month}`
+      : match.groups.month;
+  const day =
+    match.groups.day.length === 1 ? `0${match.groups.day}` : match.groups.day;
+  const res = `${year}-${month}-${day}`;
+  return res;
 };
 
 export { getHistoricalData };
