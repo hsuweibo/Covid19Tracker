@@ -8,33 +8,36 @@ import { blue, red, green } from "@material-ui/core/colors";
 
 import * as CountTypes from "../../../Constants/CountTypes";
 
-const useStyle = makeStyles((theme) => ({
-  root: {
-    width: "100%",
-    padding: "1em",
-    boxSizing: "border-box",
-    position: "relative",
-    textAlign: "center",
-  },
-
-  highlight: {
-    position: "absolute",
-    display: "block",
-    width: "80%",
-    top: "1%",
-    left: "50%",
-    transform: "translateX(-50%)",
-    height: "5px",
-    backgroundColor: (props) => {
-      const mapping = {
-        [CountTypes.ACTIVE]: blue["A200"],
-        [CountTypes.DEATHS]: red["A200"],
-        [CountTypes.RECOVERED]: green["A200"],
-      };
-      return mapping[props.countType];
+const useStyle = makeStyles(
+  (theme) => ({
+    root: {
+      width: "100%",
+      padding: "1em",
+      boxSizing: "border-box",
+      position: "relative",
+      textAlign: "center",
     },
-  },
-}));
+
+    highlight: {
+      position: "absolute",
+      display: "block",
+      width: "80%",
+      top: "1%",
+      left: "50%",
+      transform: "translateX(-50%)",
+      height: "5px",
+      backgroundColor: (props) => {
+        const mapping = {
+          [CountTypes.ACTIVE]: blue["A200"],
+          [CountTypes.DEATHS]: red["A200"],
+          [CountTypes.RECOVERED]: green["A200"],
+        };
+        return mapping[props.countType];
+      },
+    },
+  }),
+  { name: "CountBox" }
+);
 
 const CountBox = (props) => {
   const classes = useStyle(props);

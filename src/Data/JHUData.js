@@ -1,6 +1,12 @@
 import * as Countries from "../Constants/Countries";
 import * as CountTypes from "../Constants/CountTypes";
+import * as Duration from "../Constants/Duration";
 
+const mapping = {
+  [Duration.ONE_MONTH]: 30,
+  [Duration.ALL]: "all",
+  [Duration.ONE_WEEK]: 7,
+};
 /* Return a promise object. The resolved value is an object that maps each country to its daily change data. 
 The object has the form
 {
@@ -12,8 +18,10 @@ The object has the form
   [country2]: ...,
   "Worldwide": ...
 } */
-const getHistoricalData = () => {
-  return fetch("https://disease.sh/v3/covid-19/historical?lastdays=30")
+const getHistoricalData = (duration) => {
+  return fetch(
+    `https://disease.sh/v3/covid-19/historical?lastdays=${mapping[duration]}`
+  )
     .then((response) => response.json())
     .then((fetchedData) => {
       const processedData = {};
@@ -49,7 +57,9 @@ const getHistoricalData = () => {
       return processedData;
     })
     .then((processedData) =>
-      fetch("https://disease.sh/v3/covid-19/historical/all?lastdays=30")
+      fetch(
+        `https://disease.sh/v3/covid-19/historical/all?lastdays=${mapping[duration]}`
+      )
         .then((response) => response.json())
         .then((fetchedData) => {
           const worldwideData = {

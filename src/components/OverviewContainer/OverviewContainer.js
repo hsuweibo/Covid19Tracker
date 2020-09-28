@@ -5,7 +5,7 @@ import { withStyles } from "@material-ui/core/styles";
 import { getOverviewData } from "../../Data/WorldometersData";
 
 import CountBox from "./CountBox/CountBox";
-import Spinner from "../UI/Spinner/Spinner";
+import Spinner from "../Spinner/Spinner";
 import CountrySelect from "../Select/CountrySelect";
 import * as CountTypes from "../../Constants/CountTypes";
 import * as Countries from "../../Constants/Countries";
@@ -45,7 +45,7 @@ class OverviewContainer extends Component {
       content = <Spinner></Spinner>;
     } else {
       const countrySelect = (
-        <div style={{ marginTop: "8px", marginBottom: "2em" }}>
+        <div style={{ margin: "8px" }}>
           <CountrySelect
             countries={Object.keys(this.state.data)}
             onSelect={this.countrySelectHandler}
@@ -99,4 +99,6 @@ class OverviewContainer extends Component {
   }
 }
 
-export default withStyles(styles)(OverviewContainer);
+export default withStyles(styles, { name: "OverviewContainer" })(
+  OverviewContainer
+);

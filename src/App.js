@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
   },
 
   overviewGridItem: {
-    gridColumn: "1/9",
+    gridColumn: "1/8",
     gridRow: "2/3",
     [theme.breakpoints.down("sm")]: {
       gridColumn: "1/13",
@@ -27,7 +27,7 @@ const useStyles = makeStyles((theme) => ({
   },
 
   chartGridItem: {
-    gridColumn: "1/9",
+    gridColumn: "1/8",
     gridRow: "3/4",
     [theme.breakpoints.down("sm")]: {
       gridColumn: "1/13",
@@ -35,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
   },
 
   listGridItem: {
-    gridColumn: "9 /13",
+    gridColumn: "8 /13",
     gridRow: "2/4",
     [theme.breakpoints.down("sm")]: {
       gridColumn: "1/13",
@@ -54,6 +54,13 @@ const useStyles = makeStyles((theme) => ({
     gridRow: "4/5",
     [theme.breakpoints.down("sm")]: {
       gridRow: "5/6",
+    },
+  },
+
+  // Global styles, overrides the default style for small table cells
+  "@global": {
+    ".MuiTableCell-sizeSmall": {
+      padding: "6px 10px 6px 6px",
     },
   },
 }));

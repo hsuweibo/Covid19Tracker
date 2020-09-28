@@ -52,17 +52,12 @@ const chartConfig = {
       xAxes: [
         {
           display: true,
-          afterTickToLabelConversion: function (axis) {
-            for (const i in axis.ticks) {
-              axis.ticks[i] = moment(axis.ticks[i]).format("MMM DD");
-            }
+          afterBuildTicks: function (axis, ticks) {
+            return ticks.map((tick, index) => moment(tick).format("MMM DD"));
           },
+
           ticks: {
-            // maxRotation: 0,
-            callback: function (dataLabel, index) {
-              // Hide the label of every 5th dataset. return null to hide the grid line too
-              return index % 1 === 0 ? dataLabel : null;
-            },
+            maxRotation: 0,
           },
         },
       ],

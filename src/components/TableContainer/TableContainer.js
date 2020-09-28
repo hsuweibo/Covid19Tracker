@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Card, CardContent, Typography } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 import { getOverviewData } from "../../Data/WorldometersData";
-import Spinner from "../UI/Spinner/Spinner";
+import Spinner from "../Spinner/Spinner";
 import CountryCountTable from "./CountryCountTable/CountryCountTable";
 
 import * as CountTypes from "../../Constants/CountTypes";
@@ -66,7 +66,11 @@ class ListContainer extends Component {
     } else {
       table = (
         <CountryCountTable
-          selectedColumns={[CountTypes.ACTIVE]}
+          selectedColumns={[
+            [CountTypes.ACTIVE],
+            [CountTypes.DEATHS],
+            [CountTypes.RECOVERED],
+          ]}
           defaultOrderBy={CountTypes.ACTIVE}
           rows={this.convertDataToRows()}
           classes={{
@@ -91,4 +95,4 @@ class ListContainer extends Component {
   }
 }
 
-export default withStyles(styles)(ListContainer);
+export default withStyles(styles, { name: "TableContainer" })(ListContainer);

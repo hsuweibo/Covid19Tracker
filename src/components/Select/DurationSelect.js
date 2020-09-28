@@ -4,31 +4,41 @@ import { makeStyles } from "@material-ui/core/styles";
 import Select from "./Select";
 
 import PropTypes from "prop-types";
+import * as Duration from "../../Constants/Duration";
 
 const useStyles = makeStyles(
   {
     root: {
-      width: "300px",
+      width: "150px",
     },
   },
-  { name: "CountrySelect" }
+  { name: "DurationSelect" }
 );
 
-export default function CountrySelect(props) {
+export default function DurationSelect(props) {
   const classes = useStyles(props);
 
   return (
     <Select
       {...props}
       classes={{ root: classes.root }}
-      options={props.countries}
-      readOnly={false}
+      options={[
+        Duration.ONE_WEEK,
+        Duration.TWO_WEEKS,
+        Duration.ONE_MONTH,
+        Duration.ALL,
+      ]}
+      readOnly={true}
     />
   );
 }
 
-CountrySelect.propTypes = {
-  value: PropTypes.string, // The controlled selected value (not necessary same as the input value, i.e., the typed-in value)
+DurationSelect.propTypes = {
   onSelect: PropTypes.func, // The cb func when something is selected. First arg is the events object. Second arg is the selected value.
-  countries: PropTypes.arrayOf(PropTypes.string), // The list of countries available for select
+  value: PropTypes.oneOf([
+    Duration.ONE_WEEK,
+    Duration.TWO_WEEKS,
+    Duration.ONE_MONTH,
+    Duration.ALL,
+  ]), // The controlled selected value
 };

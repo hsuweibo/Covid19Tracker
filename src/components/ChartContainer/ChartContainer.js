@@ -1,32 +1,38 @@
 import React, { Component } from "react";
 import { Card, CardContent, Typography, withStyles } from "@material-ui/core";
 import DailyChangeChart from "./DailyChangeChart/DailyChangeChart";
-import Spinner from "../UI/Spinner/Spinner";
+import Spinner from "../Spinner/Spinner";
 
 import CountrySelect from "../Select/CountrySelect";
 import CountTypeSelect from "../Select/CountTypeSelect";
+import DurationSelect from "../Select/DurationSelect";
 
 import { getHistoricalData } from "../../Data/JHUData";
 import * as CountTypes from "../../Constants/CountTypes";
 import * as Countries from "../../Constants/Countries";
 
+import * as Duration from "../../Constants/Duration";
+
 const styles = (theme) => ({
   selectBar: {
     display: "flex",
     flexWrap: "wrap",
-    margin: "8px 0px",
-  },
-
-  countrySelect: {
-    marginLeft: 5,
-    [theme.breakpoints.down("sm")]: {
-      width: "100%",
-      marginLeft: 0,
-      marginTop: "1em",
-    },
+    margin: "8px",
   },
 
   countTypeSelect: {
+    [theme.breakpoints.down("sm")]: {
+      width: "100%",
+    },
+  },
+
+  countrySelect: {
+    [theme.breakpoints.down("sm")]: {
+      width: "100%",
+    },
+  },
+
+  durationSelect: {
     [theme.breakpoints.down("sm")]: {
       width: "100%",
     },
@@ -37,62 +43,110 @@ class ChartContainer extends Component {
   state = {
     selectedCountry: null,
     selectedCountType: null,
+    selectedDuration: null,
     data: null,
+    selectedData: null,
     loadComplete: false,
   };
 
   componentDidMount() {
-    getHistoricalData().then((data) =>
+    getHistoricalData(Duration.ALL).then((data) => {
       this.setState({
         data: data,
         loadComplete: true,
         selectedCountry: Countries.WORLDWIDE,
         selectedCountType: CountTypes.ACTIVE,
-      })
-    );
+        selectedDuration: Duration.ONE_MONTH, // Default duration
+      });
+      this.updateSelectedData();
+    });
   }
 
   countTypeSelectHandler = (_event, value) => {
     this.setState({ selectedCountType: value });
+    this.updateSelectedData();
   };
 
   countrySelectHandler = (_event, value) => {
     this.setState({ selectedCountry: value });
+    this.updateSelectedData();
+  };
+
+  durationSelectHandler = (_event, value) => {
+    this.setState({ selectedDuration: value });
+    this.updateSelectedData();
+  };
+
+  updateSelectedData = () => {
+    this.setState((prevState) => {
+      const {
+        selectedDuration,
+        data,
+        selectedCountry,
+        selectedCountType,
+      } = prevState;
+      let range;
+      switch (selectedDuration) {
+        case Duration.ONE_WEEK:
+          range = Object.entries(
+            data[selectedCountry][selectedCountType]
+          ).slice(-7);
+          break;
+        case Duration.TWO_WEEKS:
+          range = Object.entries(
+            data[selectedCountry][selectedCountType]
+          ).slice(-14);
+          break;
+        case Duration.ONE_MONTH:
+          range = Object.entries(
+            data[selectedCountry][selectedCountType]
+          ).slice(-30);
+          break;
+        case Duration.ALL:
+          range = Object.entries(
+            data[selectedCountry][selectedCountType]
+          ).slice();
+          break;
+        default:
+          range = [];
+      }
+      const selectedData = {};
+      for (const [date, count] of range) {
+        selectedData[date] = count;
+      }
+      return { ...prevState, selectedData: selectedData };
+    });
   };
 
   render() {
     let content;
-    if (!this.state.loadComplete) {
+    if (!this.state.selectedData) {
       content = <Spinner />;
     } else {
       content = (
         <React.Fragment>
           <div className={this.props.classes.selectBar}>
-            <CountTypeSelect
-              countTypes={[
-                CountTypes.ACTIVE,
-                CountTypes.DEATHS,
-                CountTypes.RECOVERED,
-              ]}
-              value={this.state.selectedCountType}
-              onSelect={this.countTypeSelectHandler}
-              classes={{ root: this.props.classes.countTypeSelect }}
-            />
             <CountrySelect
               countries={Object.keys(this.state.data)}
               onSelect={this.countrySelectHandler}
               value={this.state.selectedCountry}
               classes={{ root: this.props.classes.countrySelect }}
             />
+            <CountTypeSelect
+              value={this.state.selectedCountType}
+              onSelect={this.countTypeSelectHandler}
+              classes={{ root: this.props.classes.countTypeSelect }}
+            />
+            <DurationSelect
+              onSelect={this.durationSelectHandler}
+              value={this.state.selectedDuration}
+              classes={{ root: this.props.classes.durationSelect }}
+            />
           </div>
 
           <DailyChangeChart
             countType={this.state.selectedCountType}
-            data={
-              this.state.data[this.state.selectedCountry][
-                this.state.selectedCountType
-              ]
-            }
+            data={this.state.selectedData}
           />
         </React.Fragment>
       );
@@ -110,4 +164,4 @@ class ChartContainer extends Component {
   }
 }
 
-export default withStyles(styles)(ChartContainer);
+export default withStyles(styles, { name: "ChartContainer" })(ChartContainer);

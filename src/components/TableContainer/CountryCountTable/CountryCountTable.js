@@ -100,27 +100,30 @@ function TableHeader(props) {
   );
 }
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    width: "100%",
-  },
+const useStyles = makeStyles(
+  (theme) => ({
+    root: {
+      width: "100%",
+    },
 
-  container: {
-    height: "100%",
-  },
+    container: {
+      height: "100%",
+    },
 
-  visuallyHidden: {
-    border: 0,
-    clip: "rect(0 0 0 0)",
-    height: 1,
-    margin: -1,
-    overflow: "hidden",
-    padding: 0,
-    position: "absolute",
-    top: 20,
-    width: 1,
-  },
-}));
+    visuallyHidden: {
+      border: 0,
+      clip: "rect(0 0 0 0)",
+      height: 1,
+      margin: -1,
+      overflow: "hidden",
+      padding: 0,
+      position: "absolute",
+      top: 20,
+      width: 1,
+    },
+  }),
+  { name: "CountryCountTable" }
+);
 
 export default function CountryCountTable(props) {
   const { rows, selectedColumns, defaultOrderBy } = props;
