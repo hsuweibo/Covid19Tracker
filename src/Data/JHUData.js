@@ -16,7 +16,6 @@ The object has the form
     'recovered': {[date1]: [deltaCount], [date2]: [deltaCount], ...}
   }
   [country2]: ...,
-  "Worldwide": ...
 } */
 const getHistoricalData = (duration) => {
   return fetch(
@@ -67,8 +66,8 @@ const getHistoricalData = (duration) => {
             [CountTypes.DEATHS]: accumulatedToDelta(fetchedData.deaths),
             [CountTypes.RECOVERED]: accumulatedToDelta(fetchedData.recovered),
           };
-          processedData[Countries.WORLDWIDE] = worldwideData;
-          return processedData;
+
+          return { [Countries.WORLDWIDE]: worldwideData, ...processedData };
         })
     );
 };

@@ -38,7 +38,7 @@ export default function Select(props) {
       renderInput={(params) => (
         <TextField
           {...params}
-          label="Duration"
+          label={props.label}
           size="small"
           variant="outlined"
           inputProps={{
@@ -55,6 +55,7 @@ export default function Select(props) {
 Select.propTypes = {
   onSelect: PropTypes.func, // The cb func when something is selected. First arg is the events object. Second arg is the selected value.
   options: PropTypes.arrayOf(PropTypes.string), // A list of option labels for the dropdown select
+  label: PropTypes.string, // The label string,
   value: PropTypes.string, // The controlled selected value. Should be one of 'options'
   readOnly: PropTypes.bool, // Whether or not typed input is enabled
 };

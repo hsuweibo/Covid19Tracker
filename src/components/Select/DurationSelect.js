@@ -9,7 +9,7 @@ import * as Duration from "../../Constants/Duration";
 const useStyles = makeStyles(
   {
     root: {
-      width: "150px",
+      width: "130px",
     },
   },
   { name: "DurationSelect" }
@@ -29,6 +29,7 @@ export default function DurationSelect(props) {
         Duration.ALL,
       ]}
       readOnly={true}
+      label="Duration"
     />
   );
 }

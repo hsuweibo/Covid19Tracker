@@ -53,11 +53,15 @@ const chartConfig = {
         {
           display: true,
           afterBuildTicks: function (axis, ticks) {
-            return ticks.map((tick, index) => moment(tick).format("MMM DD"));
+            // Add surrounding spaces to prevent labels cluttering
+            return ticks.map(
+              (tick, index) => ` ${moment(tick).format("MMM DD")} `
+            );
           },
 
           ticks: {
             maxRotation: 0,
+            fontSize: 11,
           },
         },
       ],
@@ -76,6 +80,7 @@ const chartConfig = {
           },
           ticks: {
             precision: 0, // avoids decimal
+            fontSize: 11,
           },
         },
       ],

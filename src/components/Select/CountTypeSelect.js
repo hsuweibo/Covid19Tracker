@@ -24,6 +24,7 @@ export default function CountTypeSelect(props) {
       classes={{ root: classes.root }}
       options={[CountTypes.ACTIVE, CountTypes.DEATHS, CountTypes.RECOVERED]}
       readOnly={true}
+      label="Type"
     />
   );
 }

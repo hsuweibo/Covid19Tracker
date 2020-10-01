@@ -54,8 +54,7 @@ export const getOverviewData = () => {
             flag: GlobePic,
           };
 
-          processedData[Countries.WORLDWIDE] = worldwideData;
-          return processedData;
+          return { [Countries.WORLDWIDE]: worldwideData, ...processedData };
         });
     });
 };

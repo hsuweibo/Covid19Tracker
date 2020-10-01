@@ -71,7 +71,10 @@ function App() {
     <React.Fragment>
       <AppBar position="static" style={{ backgroundColor: "#524a4a" }}>
         <Toolbar>
-          <Typography variant="h4" style={{ flexGrow: 1, textAlign: "center" }}>
+          <Typography
+            variant="h4"
+            style={{ flexGrow: 1, textAlign: "center", letterSpacing: "3px" }}
+          >
             <i className="fas fa-virus"></i> COVID-19 TRACKER
           </Typography>
         </Toolbar>
@@ -90,7 +93,7 @@ function App() {
         </div>
         <div className={classes.footer}>
           <Typography color="textSecondary" align="center" variant="body2">
-            Covid-19 Tracker is powered by React{" "}
+            COVID-19 TRACKER is powered by React{" "}
             <i className="fab fa-react"></i> and the open data API from{" "}
             <Link href="https://disease.sh/" target="_blank">
               disease.sh

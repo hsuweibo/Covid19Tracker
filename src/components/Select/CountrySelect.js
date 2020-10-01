@@ -23,6 +23,7 @@ export default function CountrySelect(props) {
       classes={{ root: classes.root }}
       options={props.countries}
       readOnly={false}
+      label="Country"
     />
   );
 }
