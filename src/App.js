@@ -69,7 +69,7 @@ function App() {
   const classes = useStyles();
   return (
     <React.Fragment>
-      <AppBar position="static" style={{ backgroundColor: "#5c3e11" }}>
+      <AppBar position="static" style={{ backgroundColor: "#2b1b04" }}>
         <Toolbar>
           <Typography
             variant="h4"
@@ -82,8 +82,7 @@ function App() {
           >
             Covid-
             {/* The favico also uses federo font */}
-            <span style={{ fontFamily: "Federo, sans-serif" }}>19</span>
-            Tracker
+            <span style={{ fontFamily: "Federo, sans-serif" }}>19</span> Tracker
           </Typography>
         </Toolbar>
       </AppBar>
