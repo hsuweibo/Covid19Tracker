@@ -69,13 +69,21 @@ function App() {
   const classes = useStyles();
   return (
     <React.Fragment>
-      <AppBar position="static" style={{ backgroundColor: "#524a4a" }}>
+      <AppBar position="static" style={{ backgroundColor: "#5c3e11" }}>
         <Toolbar>
           <Typography
             variant="h4"
-            style={{ flexGrow: 1, textAlign: "center", letterSpacing: "3px" }}
+            style={{
+              flexGrow: 1,
+              textAlign: "center",
+              letterSpacing: "3px",
+              color: "white",
+            }}
           >
-            <i className="fas fa-virus"></i> COVID-19 TRACKER
+            Covid-
+            {/* The favico also uses federo font */}
+            <span style={{ fontFamily: "Federo, sans-serif" }}>19</span>
+            Tracker
           </Typography>
         </Toolbar>
       </AppBar>
@@ -93,7 +101,7 @@ function App() {
         </div>
         <div className={classes.footer}>
           <Typography color="textSecondary" align="center" variant="body2">
-            COVID-19 TRACKER is powered by React{" "}
+            Covid-19 Tracker is powered by React{" "}
             <i className="fab fa-react"></i> and the open data API from{" "}
             <Link href="https://disease.sh/" target="_blank">
               disease.sh
