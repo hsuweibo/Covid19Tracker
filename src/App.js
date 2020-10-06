@@ -37,6 +37,7 @@ const useStyles = makeStyles((theme) => ({
   listGridItem: {
     gridColumn: "8 /13",
     gridRow: "2/4",
+    position: "relative",
     [theme.breakpoints.down("sm")]: {
       gridColumn: "1/13",
       gridRow: "4/5",

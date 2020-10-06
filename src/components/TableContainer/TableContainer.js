@@ -9,7 +9,9 @@ import * as CountTypes from "../../Constants/CountTypes";
 
 const styles = (theme) => ({
   root: {
+    position: "absolute",
     height: "100%",
+    width: "100%",
   },
 
   cardContent: {
@@ -26,16 +28,13 @@ const styles = (theme) => ({
   },
 
   tableFlexItem: {
-    flex: "1 0 auto",
+    flex: "1 1 auto",
+    overflowY: "auto",
     paddingTop: theme.spacing(2),
   },
 
-  // Set the height to 0, so that for the calculation of the entire column this component is in, this component's table's height is not taken into account.
-  // Set the min-height to 100%, so that once the column height's is resolved/computed and rendered,
-  // the tableRoot fills the height of the flex item (which flex-grows to fill the remaining height of the flex-container, which is set to 100% height of the column)
   tableRoot: {
-    minHeight: "100%",
-    height: "0",
+    height: "100%",
   },
 });
 
