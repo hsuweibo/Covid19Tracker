@@ -30,6 +30,7 @@ const styles = (theme) => ({
   tableFlexItem: {
     flex: "1 1 auto",
     overflowY: "auto",
+    padding: "1px",
     paddingTop: theme.spacing(2),
   },
 
